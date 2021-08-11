@@ -7,6 +7,7 @@ resource "aws_instance" "web_host" {
   "${aws_security_group.web-node.id}"]
   subnet_id = "${aws_subnet.web_subnet.id}"
   user_data = <<EOF
+  
 #! /bin/bash
 sudo apt-get update
 sudo apt-get install -y apache2
@@ -19,6 +20,7 @@ echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
 EOF
   tags = {
     Name = "${local.resource_prefix.value}-ec2"
+    
   }
 }
 
@@ -194,6 +196,7 @@ output "public_subnet" {
 }
 
 output "public_subnet2" {
+  
   description = "The ID of the Public subnet"
   value       = aws_subnet.web_subnet2.id
 }
