@@ -1,6 +1,7 @@
 resource "aws_instance" "web_host" {
   # ec2 have plain text secrets in user data
   ami           = "${var.ami}"
+  
   instance_type = "t2.nano"
 
   
@@ -123,6 +124,7 @@ resource "aws_route_table" "web_rtb" {
 }
 
 resource "aws_route_table_association" "rtbassoc" {
+  
   subnet_id      = aws_subnet.web_subnet.id
   route_table_id = aws_route_table.web_rtb.id
 }
@@ -149,6 +151,7 @@ resource "aws_network_interface" "web-eni" {
   private_ips = ["172.16.10.100"]
 
   tags = {
+    
     Name = "${local.resource_prefix.value}-primary_network_interface"
   }
 }
@@ -168,6 +171,7 @@ resource "aws_flow_log" "vpcflowlogs" {
 
 resource "aws_s3_bucket" "flowbucket" {
   bucket        = "${local.resource_prefix.value}-flowlogs"
+  
   force_destroy = true
 
   tags = {
@@ -180,6 +184,7 @@ output "ec2_public_dns" {
   description = "Web Host Public DNS name"
   
   value       = aws_instance.web_host.public_dns
+  
 }
 
 output "vpc_id" {
@@ -196,4 +201,5 @@ output "public_subnet" {
 output "public_subnet2" {
   description = "The ID of the Public subnet"
   value       = aws_subnet.web_subnet2.id
+  
 }
