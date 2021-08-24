@@ -11,6 +11,7 @@ resource "aws_instance" "web_host" {
 #! /bin/bash
 sudo apt-get update
 sudo apt-get install -y apache2
+  
 sudo systemctl start apache2
 sudo systemctl enable apache2
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMAAA
@@ -35,6 +36,7 @@ resource "aws_ebs_snapshot" "example_snapshot" {
   # ebs snapshot without encryption
   volume_id   = "${aws_ebs_volume.web_host_storage.id}"
   description = "${local.resource_prefix.value}-ebs-snapshot"
+  
   tags = {
     
     Name = "${local.resource_prefix.value}-ebs-snapshot"
@@ -46,10 +48,12 @@ resource "aws_security_group" "web-node" {
   name        = "${local.resource_prefix.value}-sg"
   description = "${local.resource_prefix.value} Security Group"
   
+  
   vpc_id      = aws_vpc.web_vpc.id
 
   ingress {
     from_port = 80
+    
     to_port   = 80
     protocol  = "tcp"
     cidr_blocks = [
@@ -71,6 +75,7 @@ resource "aws_security_group" "web-node" {
       "0.0.0.0/0"]
   }
   depends_on = [aws_vpc.web_vpc]
+  
 }
 
 resource "aws_vpc" "web_vpc" {
@@ -84,6 +89,7 @@ resource "aws_vpc" "web_vpc" {
 
 resource "aws_subnet" "web_subnet" {
   vpc_id                  = aws_vpc.web_vpc.id
+  
   cidr_block              = "172.16.10.0/24"
   availability_zone       = var.availability_zone
   map_public_ip_on_launch = true
@@ -119,6 +125,7 @@ resource "aws_route_table" "web_rtb" {
 
   tags = {
     Name = "${local.resource_prefix.value}-rtb"
+    
   }
 }
 
@@ -145,6 +152,7 @@ resource "aws_route" "public_internet_gateway" {
 
 
 resource "aws_network_interface" "web-eni" {
+  
   subnet_id   = aws_subnet.web_subnet.id
   private_ips = ["172.16.10.100"]
 
@@ -183,6 +191,7 @@ output "ec2_public_dns" {
 }
 
 output "vpc_id" {
+  
   description = "The ID of the VPC"
   value       = aws_vpc.web_vpc.id
 }
