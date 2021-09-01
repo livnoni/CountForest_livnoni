@@ -7,6 +7,7 @@ resource "aws_instance" "web_host" {
   vpc_security_group_ids = [
     "${aws_security_group.web-node.id}"]
   subnet_id = "${aws_subnet.web_subnet.id}"
+  
   user_data = <<EOF
 #! /bin/bash
 sudo apt-get update
@@ -73,6 +74,7 @@ resource "aws_security_group" "web-node" {
   depends_on = [aws_vpc.web_vpc]
 }
 
+
 resource "aws_vpc" "web_vpc" {
   cidr_block           = "172.16.0.0/16"
   enable_dns_hostnames = true
@@ -123,6 +125,7 @@ resource "aws_route_table" "web_rtb" {
 }
 
 resource "aws_route_table_association" "rtbassoc" {
+  
   subnet_id      = aws_subnet.web_subnet.id
   route_table_id = aws_route_table.web_rtb.id
 }
