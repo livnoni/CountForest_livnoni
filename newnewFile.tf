@@ -6,9 +6,9 @@ resource "aws_instance" "web_host" {
   instance_type = "t2.nano"
 
   vpc_security_group_ids = [
-    "${aws_security_group.web-node.id}"]
+  "${aws_security_group.web-node.id}"]
   subnet_id = "${aws_subnet.web_subnet.id}"
-  
+
   user_data = <<EOF
 #! /bin/bash
 sudo apt-get update
@@ -21,15 +21,17 @@ export AWS_DEFAULT_REGION=us-west-2
 echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
 EOF
   tags = {
-    Name = "${local.resource_prefix.value}-ec2"
+    Name      = "${local.resource_prefix.value}-ec2"
+    yor_trace = "f8581605-2fe7-447b-9d61-0d95add9df4f"
   }
 }
 
 resource "aws_ebs_volume" "web_host_storage" {
   availability_zone = "${var.availability_zone}"
-  size = 1
+  size              = 1
   tags = {
-    
-    Name = "${local.resource_prefix.value}-ebs"
+
+    Name      = "${local.resource_prefix.value}-ebs"
+    yor_trace = "b4b51cda-1a41-4dff-9502-25d8a0e256d0"
   }
 }
