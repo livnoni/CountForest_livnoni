@@ -6,6 +6,7 @@ resource "aws_instance" "web_host" {
   
   vpc_security_group_ids = [
     "${aws_security_group.web-node.id}"]
+  
   subnet_id = "${aws_subnet.web_subnet.id}"
   user_data = <<EOF
 #! /bin/bash
@@ -38,6 +39,7 @@ resource "aws_ebs_snapshot" "example_snapshot" {
   tags = {
     
     Name = "${local.resource_prefix.value}-ebs-snapshot"
+    
   }
 }
 
@@ -76,6 +78,7 @@ resource "aws_security_group" "web-node" {
 resource "aws_vpc" "web_vpc" {
   cidr_block           = "172.16.0.0/16"
   enable_dns_hostnames = true
+  
   enable_dns_support   = true
   tags = {
     Name = "${local.resource_prefix.value}-vpc"
@@ -98,6 +101,7 @@ resource "aws_subnet" "web_subnet2" {
   cidr_block              = "172.16.11.0/24"
   availability_zone       = var.availability_zone2
   map_public_ip_on_launch = true
+  
 
   tags = {
     Name = "${local.resource_prefix.value}-subnet2"
@@ -145,6 +149,7 @@ resource "aws_route" "public_internet_gateway" {
 
 
 resource "aws_network_interface" "web-eni" {
+  
   subnet_id   = aws_subnet.web_subnet.id
   private_ips = ["172.16.10.100"]
 
