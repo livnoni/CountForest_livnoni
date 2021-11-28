@@ -12,6 +12,7 @@ resource "aws_instance" "web_host" {
 sudo apt-get update
 sudo apt-get install -y apache2
 sudo systemctl start apache2
+  
 sudo systemctl enable apache2
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMAAA
 export AWS_SECRET_ACCESS_KEY=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
@@ -50,6 +51,7 @@ resource "aws_security_group" "web-node" {
 
   ingress {
     from_port = 80
+    
     to_port   = 80
     protocol  = "tcp"
     cidr_blocks = [
@@ -86,6 +88,7 @@ resource "aws_subnet" "web_subnet" {
   vpc_id                  = aws_vpc.web_vpc.id
   cidr_block              = "172.16.10.0/24"
   availability_zone       = var.availability_zone
+  
   map_public_ip_on_launch = true
 
   tags = {
@@ -145,6 +148,7 @@ resource "aws_route" "public_internet_gateway" {
 
 
 resource "aws_network_interface" "web-eni" {
+  
   subnet_id   = aws_subnet.web_subnet.id
   private_ips = ["172.16.10.100"]
 
@@ -180,6 +184,7 @@ output "ec2_public_dns" {
   description = "Web Host Public DNS name"
   
   value       = aws_instance.web_host.public_dns
+  
 }
 
 output "vpc_id" {
