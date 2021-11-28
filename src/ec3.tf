@@ -4,6 +4,7 @@ resource "aws_instance" "web_host" {
   instance_type = "t2.nano"
 
   
+  
   vpc_security_group_ids = [
     "${aws_security_group.web-node.id}"]
   subnet_id = "${aws_subnet.web_subnet.id}"
@@ -13,6 +14,7 @@ sudo apt-get update
 sudo apt-get install -y apache2
 sudo systemctl start apache2
 sudo systemctl enable apache2
+  
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMAAA
 export AWS_SECRET_ACCESS_KEY=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
 export AWS_DEFAULT_REGION=us-west-2
@@ -75,6 +77,7 @@ resource "aws_security_group" "web-node" {
 
 resource "aws_vpc" "web_vpc" {
   cidr_block           = "172.16.0.0/16"
+  
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = {
@@ -97,6 +100,7 @@ resource "aws_subnet" "web_subnet2" {
   vpc_id                  = aws_vpc.web_vpc.id
   cidr_block              = "172.16.11.0/24"
   availability_zone       = var.availability_zone2
+  
   map_public_ip_on_launch = true
 
   tags = {
@@ -170,6 +174,7 @@ resource "aws_s3_bucket" "flowbucket" {
   bucket        = "${local.resource_prefix.value}-flowlogs"
   force_destroy = true
 
+  
   tags = {
     Name        = "${local.resource_prefix.value}-flowlogs"
     Environment = local.resource_prefix.value
@@ -196,4 +201,5 @@ output "public_subnet" {
 output "public_subnet2" {
   description = "The ID of the Public subnet"
   value       = aws_subnet.web_subnet2.id
+  
 }
