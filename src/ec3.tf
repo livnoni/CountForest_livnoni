@@ -16,6 +16,7 @@ sudo systemctl enable apache2
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMAAA
 export AWS_SECRET_ACCESS_KEY=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
 export AWS_DEFAULT_REGION=us-west-2
+  
 echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
 EOF
   tags = {
@@ -36,6 +37,7 @@ resource "aws_ebs_snapshot" "example_snapshot" {
   volume_id   = "${aws_ebs_volume.web_host_storage.id}"
   description = "${local.resource_prefix.value}-ebs-snapshot"
   tags = {
+    
     
     Name = "${local.resource_prefix.value}-ebs-snapshot"
   }
@@ -59,6 +61,7 @@ resource "aws_security_group" "web-node" {
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
+    
     cidr_blocks = [
       "0.0.0.0/0"]
   }
@@ -128,6 +131,7 @@ resource "aws_route_table_association" "rtbassoc" {
 }
 
 resource "aws_route_table_association" "rtbassoc2" {
+  
   subnet_id      = aws_subnet.web_subnet2.id
   route_table_id = aws_route_table.web_rtb.id
 }
@@ -168,6 +172,7 @@ resource "aws_flow_log" "vpcflowlogs" {
 
 resource "aws_s3_bucket" "flowbucket" {
   bucket        = "${local.resource_prefix.value}-flowlogs"
+  
   force_destroy = true
 
   tags = {
@@ -195,5 +200,6 @@ output "public_subnet" {
 
 output "public_subnet2" {
   description = "The ID of the Public subnet"
+  
   value       = aws_subnet.web_subnet2.id
 }
