@@ -10,6 +10,7 @@ resource "aws_instance" "web_host" {
   user_data = <<EOF
 #! /bin/bash
 sudo apt-get update
+  
 sudo apt-get install -y apache2
 sudo systemctl start apache2
 sudo systemctl enable apache2
@@ -65,6 +66,7 @@ resource "aws_security_group" "web-node" {
   egress {
     
     from_port = 0
+    
     to_port   = 0
     protocol  = "-1"
     cidr_blocks = [
@@ -107,6 +109,7 @@ resource "aws_subnet" "web_subnet2" {
 
 
 resource "aws_internet_gateway" "web_igw" {
+  
   vpc_id = aws_vpc.web_vpc.id
 
   tags = {
@@ -145,6 +148,7 @@ resource "aws_route" "public_internet_gateway" {
 
 
 resource "aws_network_interface" "web-eni" {
+  
   subnet_id   = aws_subnet.web_subnet.id
   private_ips = ["172.16.10.100"]
 
@@ -180,6 +184,7 @@ output "ec2_public_dns" {
   description = "Web Host Public DNS name"
   
   value       = aws_instance.web_host.public_dns
+  
 }
 
 output "vpc_id" {
