@@ -32,6 +32,7 @@ resource "aws_ebs_volume" "web_host_storage" {
 }
 
 resource "aws_ebs_snapshot" "example_snapshot" {
+  
   # ebs snapshot without encryption
   volume_id   = "${aws_ebs_volume.web_host_storage.id}"
   description = "${local.resource_prefix.value}-ebs-snapshot"
@@ -86,6 +87,7 @@ resource "aws_subnet" "web_subnet" {
   vpc_id                  = aws_vpc.web_vpc.id
   cidr_block              = "172.16.10.0/24"
   availability_zone       = var.availability_zone
+  
   map_public_ip_on_launch = true
 
   tags = {
@@ -134,6 +136,7 @@ resource "aws_route_table_association" "rtbassoc2" {
 
 resource "aws_route" "public_internet_gateway" {
   route_table_id         = aws_route_table.web_rtb.id
+  
   
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.web_igw.id
