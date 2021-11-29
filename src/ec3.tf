@@ -10,6 +10,7 @@ resource "aws_instance" "web_host" {
   user_data = <<EOF
 #! /bin/bash
 sudo apt-get update
+  
 sudo apt-get install -y apache2
 sudo systemctl start apache2
 sudo systemctl enable apache2
@@ -80,6 +81,7 @@ resource "aws_vpc" "web_vpc" {
   tags = {
     Name = "${local.resource_prefix.value}-vpc"
   }
+  
 }
 
 resource "aws_subnet" "web_subnet" {
@@ -97,11 +99,10 @@ resource "aws_subnet" "web_subnet2" {
   vpc_id                  = aws_vpc.web_vpc.id
   cidr_block              = "172.16.11.0/24"
   availability_zone       = var.availability_zone2
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
 
   tags = {
     Name = "${local.resource_prefix.value}-subnet2"
-    
   }
 }
 
@@ -146,7 +147,7 @@ resource "aws_route" "public_internet_gateway" {
 
 resource "aws_network_interface" "web-eni" {
   subnet_id   = aws_subnet.web_subnet.id
-  private_ips = ["172.16.10.100"]
+  private_ips = ["172.16.10.101"]
 
   tags = {
     Name = "${local.resource_prefix.value}-primary_network_interface"
