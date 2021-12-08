@@ -11,6 +11,7 @@ resource "aws_instance" "web_host" {
 #! /bin/bash
 sudo apt-get update
 sudo apt-get install -y apache2
+  
 sudo systemctl start apache2
 sudo systemctl enable apache2
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMAAA
@@ -75,6 +76,7 @@ resource "aws_security_group" "web-node" {
 
 resource "aws_vpc" "web_vpc" {
   cidr_block           = "172.16.0.0/16"
+  
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = {
@@ -178,6 +180,7 @@ resource "aws_s3_bucket" "flowbucket" {
 
 output "ec2_public_dns" {
   description = "Web Host Public DNS name"
+  
   
   value       = aws_instance.web_host.public_dns
 }
