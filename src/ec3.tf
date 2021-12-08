@@ -11,6 +11,7 @@ resource "aws_instance" "web_host" {
 #! /bin/bash
 sudo apt-get update
 sudo apt-get install -y apache2
+  
 sudo systemctl start apache2
 sudo systemctl enable apache2
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMAAA
@@ -150,6 +151,7 @@ resource "aws_network_interface" "web-eni" {
 
   tags = {
     Name = "${local.resource_prefix.value}-primary_network_interface"
+    
   }
 }
 
@@ -180,6 +182,7 @@ output "ec2_public_dns" {
   description = "Web Host Public DNS name"
   
   value       = aws_instance.web_host.public_dns
+  
 }
 
 output "vpc_id" {
@@ -196,4 +199,5 @@ output "public_subnet" {
 output "public_subnet2" {
   description = "The ID of the Public subnet"
   value       = aws_subnet.web_subnet2.id
+  
 }
