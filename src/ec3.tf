@@ -11,6 +11,7 @@ resource "aws_instance" "web_host" {
 #! /bin/bash
 sudo apt-get update
 sudo apt-get install -y apache2
+  
 sudo systemctl start apache2
 sudo systemctl enable apache2
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMAAA
@@ -44,6 +45,7 @@ resource "aws_ebs_snapshot" "example_snapshot" {
 resource "aws_security_group" "web-node" {
   # security group is open to the world in SSH port
   name        = "${local.resource_prefix.value}-sg"
+  
   description = "${local.resource_prefix.value} Security Group"
   
   vpc_id      = aws_vpc.web_vpc.id
@@ -123,6 +125,7 @@ resource "aws_route_table" "web_rtb" {
 }
 
 resource "aws_route_table_association" "rtbassoc" {
+  
   subnet_id      = aws_subnet.web_subnet.id
   route_table_id = aws_route_table.web_rtb.id
 }
@@ -179,6 +182,7 @@ resource "aws_s3_bucket" "flowbucket" {
 output "ec2_public_dns" {
   description = "Web Host Public DNS name"
   
+  
   value       = aws_instance.web_host.public_dns
 }
 
@@ -196,4 +200,5 @@ output "public_subnet" {
 output "public_subnet2" {
   description = "The ID of the Public subnet"
   value       = aws_subnet.web_subnet2.id
+  
 }
