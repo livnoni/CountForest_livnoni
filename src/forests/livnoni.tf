@@ -6,4 +6,7 @@ resource "aws_s3_bucket" "data_science" {
     enabled = var.enabled
   }
   force_destroy = true
+  tags = {
+    yor_trace = "1f291d32-2c9a-406d-bcc3-f12e0eca4215"
+  }
 }
