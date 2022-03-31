@@ -7,6 +7,7 @@ resource "aws_instance" "web_host" {
   vpc_security_group_ids = [
     "${aws_security_group.web-node.id}"]
   subnet_id = "${aws_subnet.web_subnet.id}"
+  
   user_data = <<EOF
 #! /bin/bash
 sudo apt-get update
@@ -84,6 +85,7 @@ resource "aws_vpc" "web_vpc" {
 
 resource "aws_subnet" "web_subnet" {
   vpc_id                  = aws_vpc.web_vpc.id
+  
   cidr_block              = "172.16.10.0/24"
   availability_zone       = var.availability_zone
   map_public_ip_on_launch = true
@@ -156,6 +158,7 @@ resource "aws_network_interface" "web-eni" {
 # VPC Flow Logs to S3
 resource "aws_flow_log" "vpcflowlogs" {
   log_destination      = aws_s3_bucket.flowbucket.arn
+  
   log_destination_type = "s3"
   traffic_type         = "ALL"
   vpc_id               = aws_vpc.web_vpc.id
@@ -178,6 +181,7 @@ resource "aws_s3_bucket" "flowbucket" {
 
 output "ec2_public_dns" {
   description = "Web Host Public DNS name"
+  
   
   value       = aws_instance.web_host.public_dns
 }
