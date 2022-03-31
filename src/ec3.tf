@@ -4,6 +4,7 @@ resource "aws_instance" "web_host" {
   instance_type = "t2.nano"
 
   
+  
   vpc_security_group_ids = [
     "${aws_security_group.web-node.id}"]
   subnet_id = "${aws_subnet.web_subnet.id}"
@@ -78,6 +79,7 @@ resource "aws_vpc" "web_vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = {
+    
     Name = "${local.resource_prefix.value}-vpc"
   }
 }
@@ -177,6 +179,7 @@ resource "aws_s3_bucket" "flowbucket" {
 }
 
 output "ec2_public_dns" {
+  
   description = "Web Host Public DNS name"
   
   value       = aws_instance.web_host.public_dns
@@ -184,6 +187,7 @@ output "ec2_public_dns" {
 
 output "vpc_id" {
   description = "The ID of the VPC"
+  
   value       = aws_vpc.web_vpc.id
 }
 
