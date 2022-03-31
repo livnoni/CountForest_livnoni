@@ -6,6 +6,7 @@ resource "aws_instance" "web_host" {
   
   vpc_security_group_ids = [
     "${aws_security_group.web-node.id}"]
+  
   subnet_id = "${aws_subnet.web_subnet.id}"
   user_data = <<EOF
 #! /bin/bash
@@ -79,6 +80,7 @@ resource "aws_vpc" "web_vpc" {
   enable_dns_support   = true
   tags = {
     Name = "${local.resource_prefix.value}-vpc"
+    
   }
 }
 
@@ -172,12 +174,14 @@ resource "aws_s3_bucket" "flowbucket" {
 
   tags = {
     Name        = "${local.resource_prefix.value}-flowlogs"
+    
     Environment = local.resource_prefix.value
   }
 }
 
 output "ec2_public_dns" {
   description = "Web Host Public DNS name"
+  
   
   value       = aws_instance.web_host.public_dns
 }
@@ -189,11 +193,13 @@ output "vpc_id" {
 
 output "public_subnet" {
   description = "The ID of the Public subnet"
+  
   value       = aws_subnet.web_subnet.id
   #commit to master
 }
 
 output "public_subnet2" {
   description = "The ID of the Public subnet"
+  
   value       = aws_subnet.web_subnet2.id
 }
