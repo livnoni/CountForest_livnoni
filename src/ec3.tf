@@ -5,6 +5,7 @@ resource "aws_instance" "web_host" {
 
   
   vpc_security_group_ids = [
+    
     "${aws_security_group.web-node.id}"]
   subnet_id = "${aws_subnet.web_subnet.id}"
   user_data = <<EOF
@@ -124,6 +125,7 @@ resource "aws_route_table" "web_rtb" {
 
 resource "aws_route_table_association" "rtbassoc" {
   subnet_id      = aws_subnet.web_subnet.id
+  
   route_table_id = aws_route_table.web_rtb.id
 }
 
@@ -179,6 +181,7 @@ resource "aws_s3_bucket" "flowbucket" {
 output "ec2_public_dns" {
   description = "Web Host Public DNS name"
   
+  
   value       = aws_instance.web_host.public_dns
 }
 
@@ -196,4 +199,5 @@ output "public_subnet" {
 output "public_subnet2" {
   description = "The ID of the Public subnet"
   value       = aws_subnet.web_subnet2.id
+  
 }
