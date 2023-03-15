@@ -2,6 +2,7 @@ resource "aws_instance" "web_host" {
   # ec2 have plain text secrets in user data
   ami           = "${var.ami}"
   instance_type = "t2.nano"
+  
 
   
   vpc_security_group_ids = [
@@ -25,6 +26,7 @@ EOF
 
 resource "aws_ebs_volume" "web_host_storage" {
   availability_zone = "${var.availability_zone}"
+  
   size = 1
   tags = {
     Name = "${local.resource_prefix.value}-ebs"
@@ -43,6 +45,7 @@ resource "aws_ebs_snapshot" "example_snapshot" {
 
 resource "aws_security_group" "web-node" {
   # security group is open to the world in SSH port
+  
   name        = "${local.resource_prefix.value}-sg"
   description = "${local.resource_prefix.value} Security Group"
   
@@ -84,6 +87,7 @@ resource "aws_vpc" "web_vpc" {
 
 resource "aws_subnet" "web_subnet" {
   vpc_id                  = aws_vpc.web_vpc.id
+  
   cidr_block              = "172.16.10.0/24"
   availability_zone       = var.availability_zone
   map_public_ip_on_launch = true
